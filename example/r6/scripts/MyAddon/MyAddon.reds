@@ -1,5 +1,5 @@
 // A minimal Preem Weaponsmith add-on: one Mag mod, a simple Cripple Shard that costs 10% damage.
-// The Hacker Mod Pack's real Cripple Shard also uploads Cripple Movement; see the README, Part 5.
+// The README walks through this file, step by step, beside the Hacker Mod Pack's own code.
 // Install: copy this folder to <game>\r6\scripts\MyAddon\ and the tweaks folder to <game>\r6\tweaks\MyAddon\.
 module MyAddon
 
@@ -47,5 +47,30 @@ public class MyAddon extends PreemAddon {
       return gamedataQuality.Epic;
     }
     return gamedataQuality.Invalid;
+  }
+}
+
+// Whether a weapon has the Cripple Shard on it (README, Step 4). Call it from your own code.
+public abstract class MyAddonWeapon {
+  // True when the weapon has the Cripple Shard in either Mag slot.
+  public static func HasCrippleShard(weapon: wref<WeaponObject>) -> Bool {
+    if !IsDefined(weapon) {
+      return false;
+    }
+    let itemData = weapon.GetItemData();
+    if !IsDefined(itemData) {
+      return false;
+    }
+    return MyAddonWeapon.SlotHolds(itemData, t"AttachmentSlots.PreemMagazineMod01", t"Items.MyAddon_CrippleShard")
+      || MyAddonWeapon.SlotHolds(itemData, t"AttachmentSlots.PreemMagazineMod02", t"Items.MyAddon_CrippleShard");
+  }
+
+  private static func SlotHolds(itemData: ref<gameItemData>, slot: TweakDBID, item: TweakDBID) -> Bool {
+    if !itemData.HasPartInSlot(slot) {
+      return false;
+    }
+    let part: InnerItemData;
+    itemData.GetItemPart(part, slot);
+    return ItemID.GetTDBID(InnerItemData.GetItemID(part)) == item;
   }
 }
