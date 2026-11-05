@@ -62,13 +62,13 @@ You don't need to install a compiler or build anything: the game compiles your f
 
 ## Part 1: Install the example and see it in game
 
-The example adds one barrel mod, **Power Barrel**, that gives a weapon 10% more damage.
+The example adds one Mag mod, a simple **Cripple Shard**. It's the pack's Cripple Shard with only its records: it costs a weapon 10% damage, like the real one, but it doesn't build stacks or upload Cripple Movement. Part 5 shows where the real one does that. Because it shares the real mod's name, give yours a different one before you release anything.
 
 1. Find your game folder: the one holding the `bin` and `r6` folders (for Steam, usually `...\steamapps\common\Cyberpunk 2077`).
 2. Copy `example/r6/scripts/MyAddon` into the game's `r6/scripts/` folder, so you have `r6/scripts/MyAddon/MyAddon.reds`.
 3. Copy `example/r6/tweaks/MyAddon` into the game's `r6/tweaks/` folder, so you have `r6/tweaks/MyAddon/my_addon.yaml`.
 4. Start the game and load a save.
-5. Open the crafting screen and go to Preem Weaponsmith's **Barrel** page: **Power Barrel** is there. With the Weapon Blueprints unlock mode, it unlocks with an Uncommon or better weapon blueprint, because the example says `Uncommon`.
+5. Open the crafting screen and go to Preem Weaponsmith's **Mag** page: **Cripple Shard** is there. With the Weapon Blueprints unlock mode, it unlocks with an Epic or better weapon blueprint, because the example says `Epic`.
 
 If you have CET, its log file (`bin/x64/plugins/cyber_engine_tweaks/gamelog.log`, written when the game closes) has the line:
 
@@ -87,19 +87,21 @@ Every name in the example says `MyAddon`. Before you change anything else, pick 
 | Folder names | `r6/scripts/MyAddon/`, `r6/tweaks/MyAddon/` | `r6/scripts/PlasmaMods/`, `r6/tweaks/PlasmaMods/` |
 | `module` line at the top of the `.reds` file | `module MyAddon` | `module PlasmaMods` |
 | The class name | `class MyAddon extends PreemAddon` | `class PlasmaMods extends PreemAddon` |
-| Mod IDs | `n"MyAddon.PowerBarrel"` | `n"PlasmaMods.PowerBarrel"` |
-| Record IDs in the `.yaml` and in `MapItem` | `Items.MyAddon_PowerBarrel` | `Items.PlasmaMods_PowerBarrel` |
+| Mod IDs | `n"MyAddon.CrippleShard"` | `n"PlasmaMods.CrippleShard"` |
+| Record IDs in the `.yaml` and in `MapItem` | `Items.MyAddon_CrippleShard`, `Items.MyAddon_DamagePenalty` | `Items.PlasmaMods_CrippleShard`, `Items.PlasmaMods_DamagePenalty` |
 
-The name keeps your add-on from clashing with anyone else's: two add-ons can't both use `Items.PowerBarrel`, but `Items.PlasmaMods_PowerBarrel` is yours alone.
+The name keeps your add-on from clashing with anyone else's: two add-ons can't both use `Items.CrippleShard`, but `Items.PlasmaMods_CrippleShard` is yours alone. (The Hacker Mod Pack's own records start `Items.PHB_`, which is why the example and the real Cripple Shard can be installed together.)
 
 Then change what players see, in `DefineMod`:
 
 ```swift
-mod.preemClassType = PreemModClassType.Barrel;      // which slots: Barrel, Trigger, Mag, Blade or Handle
-mod.SetModName(n"Power Barrel");                    // the mod's name
-mod.SetDescription("+10% damage");                  // what it does
-mod.SetAdditionalDescription("An example mod.");    // flavour text
+mod.preemClassType = PreemModClassType.Mag;                             // which slots: Barrel, Trigger, Mag, Blade or Handle
+mod.SetModName(n"Cripple Shard");                                       // the mod's name
+mod.SetDescription("-10% damage");                                      // what it does
+mod.SetAdditionalDescription("\"There, gave you a handicap!\" - Capri"); // flavour text
 ```
+
+A `\"` inside the quotes puts a quotation mark in the text, and `\n` starts a new line.
 
 If you change `preemClassType`, change the record's `placementSlots` in the `.yaml` to match:
 
@@ -120,18 +122,20 @@ Restart the game after every change: the game only reads `.reds` and `.yaml` fil
 A mod's stat changes are records listed under `statModifiers` in its item record. The example has one:
 
 ```yaml
-Items.MyAddon_DamageBoost:
+Items.MyAddon_DamagePenalty:
   $type: gamedataConstantStatModifier_Record
   modifierType: Multiplier
   statType: BaseStats.DPS
-  value: 1.1
+  value: 0.9
 ```
 
 - `statType` is the stat to change. `BaseStats.DPS` is the weapon's damage.
-- `modifierType` is how: `Multiplier` multiplies the stat (`1.1` = +10%, `0.9` = -10%), `Additive` adds to it (`5` = +5).
+- `modifierType` is how: `Multiplier` multiplies the stat (`0.9` = -10%, `1.1` = +10%), `Additive` adds to it (`5` = +5).
 - `value` is the amount.
 
-To change something else, add another record like this one with a different `statType`, and list it too: `statModifiers: [Items.MyAddon_DamageBoost, Items.MyAddon_OtherChange]`. To find stat names, look at the game's own weapon mods in a TweakDB browser such as WolvenKit's, or at Preem Weaponsmith's own records, and copy what they use. The [Cyberpunk 2077 modding wiki](https://wiki.redmodding.org/cyberpunk-2077-modding) explains TweakXL and its YAML format in depth.
+Every mod in the Hacker Mod Pack uses this exact record (as `Items.PHB_MagDamagePenalty` in `mags.yaml`): the -10% is the price of its quickhack effect. Two of them on one weapon multiply, so the weapon does 81% damage.
+
+To change something else, add another record like this one with a different `statType`, and list it too: `statModifiers: [Items.MyAddon_DamagePenalty, Items.MyAddon_OtherChange]`. To find stat names, look at the game's own weapon mods in a TweakDB browser such as WolvenKit's, or at Preem Weaponsmith's own records, and copy what they use. The [Cyberpunk 2077 modding wiki](https://wiki.redmodding.org/cyberpunk-2077-modding) explains TweakXL and its YAML format in depth.
 
 If a record has a mistake, TweakXL writes it to `red4ext/plugins/TweakXL/TweakXL.log` and skips it: check that file whenever a change doesn't show up.
 
@@ -141,21 +145,21 @@ Each mod needs three things: an ID, an item record, and answers in each method o
 
 ```swift
 public func GetModIds() -> array<CName> {
-  return [n"MyAddon.PowerBarrel", n"MyAddon.QuickTrigger"];
+  return [n"MyAddon.CrippleShard", n"MyAddon.OverheatShard"];
 }
 
 public func MapItem(id: CName) -> TweakDBID {
-  if Equals(id, n"MyAddon.PowerBarrel") {
-    return t"Items.MyAddon_PowerBarrel";
+  if Equals(id, n"MyAddon.CrippleShard") {
+    return t"Items.MyAddon_CrippleShard";
   }
-  if Equals(id, n"MyAddon.QuickTrigger") {
-    return t"Items.MyAddon_QuickTrigger";
+  if Equals(id, n"MyAddon.OverheatShard") {
+    return t"Items.MyAddon_OverheatShard";
   }
   return TDBID.None();
 }
 ```
 
-`DefineMod` and `GetUnlockQuality` follow the same pattern. With many mods that gets long, so the Hacker Mod Pack keeps every mod in one table instead: see `r6/scripts/PreemWSHackerPack/Mags.reds`, where each row holds a mod's ID, item, unlock rarity, name and text, and `HackerBarrelsAddon.reds`, whose methods just look the row up. Adding a mod there is one new row plus its records.
+Each new mod also needs its own item record in the `.yaml` (`Items.MyAddon_OverheatShard`, set up like `Items.MyAddon_CrippleShard`). `DefineMod` and `GetUnlockQuality` follow the same pattern. With many mods that gets long, so the Hacker Mod Pack keeps every mod in one table instead: see `r6/scripts/PreemWSHackerPack/Mags.reds`, where each row holds a mod's ID, item, unlock rarity, name and text, and `HackerBarrelsAddon.reds`, whose methods just look the row up. Adding a mod there is one new row plus its records.
 
 ## Part 5: Mods that do something new (hooks)
 
@@ -182,6 +186,24 @@ The Hacker Mod Pack has three hooks you can learn from:
 
 `Hits.reds` also shows how to tell whether a weapon carries your mod: read the weapon's item data and check its two slots for your item record (`WeaponHasMag` and `SlotHoldsItem`).
 
+### How the real Cripple Shard works
+
+The example stops at the records. Here's what the pack adds on top to make the Cripple Shard upload Cripple Movement, file by file:
+
+1. **Its row in `Mags.reds`** ties the mod ID `PreemHackerBarrels.Cripple` to its item `Items.PHB_CrippleMag` and to a status effect, `BaseStatusEffect.PHB_CrippleCharge`. The status effect is what holds the stacks on the enemy.
+2. **Its status effect in `status_effects.yaml`** sets the stacks: at most 3, gone 8 seconds after the last one. Small extra values sit beside it, which the code reads by name:
+
+   ```yaml
+   BaseStatusEffect.PHB_CrippleCharge.stackInterval: 0.2       # seconds between stacks
+   BaseStatusEffect.PHB_CrippleCharge.uploadCooldown: 30.0     # seconds before the same enemy can be crippled again
+   BaseStatusEffect.PHB_CrippleCharge.quickhack: "QuickHack.LocomotionMalfunctionHack"   # the quickhack to upload
+   ```
+
+3. **`Hits.reds`** runs on every hit. If the player's weapon carries the Cripple Shard, it adds a stack of `PHB_CrippleCharge` to the enemy, no more often than `stackInterval`.
+4. **At the third stack**, `Hits.reds` sees that the effect names a `quickhack`, takes the stacks off, and calls `MagUpload.Start` in **`Upload.reds`**, which starts the game's own Cripple Movement upload on that enemy with its RAM cost skipped. Then it starts the `uploadCooldown`.
+
+Every upload mag in the pack works this way; only the numbers and the quickhack in `status_effects.yaml` differ. So once you understand the Cripple Shard, adding another one is a new row in `Mags.reds`, an item in `mags.yaml` and a status effect in `status_effects.yaml`, with no new code.
+
 To find which game function to wrap, read the game's own scripts. The redscript and modding communities publish them (search for "Cyberpunk 2077 script dump"), and the modding wiki above covers redscript.
 
 One limit: **you can wrap the game's classes, but not Preem Weaponsmith's** (or any other mod's). redscript only finds the game's own classes. Talk to Preem Weaponsmith only through the add-on class below.
@@ -204,7 +226,7 @@ In `DefineMod`, set at least `mod.preemClassType`, `mod.SetModName(...)`, `mod.S
 - `mod.AddIncompatMod(style)`: the mod can't be on one weapon with another.
 - `mod.SetRequiredEvolution(gamedataWeaponEvolution.Smart)`: only Smart weapons (or Power, Tech, ...) can take it.
 
-Those take a *style*, Preem Weaponsmith's number for a mod. For one of Preem Weaponsmith's own mods use its name, such as `PreemModStyleType.Barrel_Smart`. For one of yours, ask for it by ID: `PreemAddons.StyleOf(n"MyAddon.PowerBarrel")`. Don't set `mod.modStyleType` yourself: Preem Weaponsmith does.
+Those take a *style*, Preem Weaponsmith's number for a mod. For one of Preem Weaponsmith's own mods use its name, such as `PreemModStyleType.Barrel_Smart`. For one of yours, ask for it by ID: `PreemAddons.StyleOf(n"MyAddon.CrippleShard")`. Don't set `mod.modStyleType` yourself: Preem Weaponsmith does.
 
 The `@if(ModuleExists("PreemCrafting.Addons"))` lines in the example mean "only build this when Preem Weaponsmith is installed". Without them, a player who removes Preem Weaponsmith but keeps your add-on would get a script error at startup. Keep them on the `import` lines and on your class.
 
