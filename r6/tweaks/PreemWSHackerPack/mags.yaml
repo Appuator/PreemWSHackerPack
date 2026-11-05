@@ -1,0 +1,64 @@
+# The add-on's barrel items (SPEC §3). A barrel's effect comes from its hit hook; its only stat is the
+# damage it costs. Record IDs are save-visible: never rename one once released.
+
+# 10 % less damage, as a multiplier on DPS, which core's Extra Barrel also changes (core's barrels.yaml).
+Items.PHB_MagDamagePenalty:
+  $type: gamedataConstantStatModifier_Record
+  modifierType: Multiplier
+  statType: BaseStats.DPS
+  value: 0.9
+
+Items.PHB_HackerMag:
+  $base: Items.SimpleWeaponMod01
+  placementSlots: [AttachmentSlots.PreemMagazineMod01, AttachmentSlots.PreemMagazineMod02]
+  statModifiers: [Items.PHB_MagDamagePenalty]
+
+Items.PHB_CrippleMag:
+  $base: Items.SimpleWeaponMod01
+  placementSlots: [AttachmentSlots.PreemMagazineMod01, AttachmentSlots.PreemMagazineMod02]
+  statModifiers: [Items.PHB_MagDamagePenalty]
+
+Items.PHB_OverheatMag:
+  $base: Items.SimpleWeaponMod01
+  placementSlots: [AttachmentSlots.PreemMagazineMod01, AttachmentSlots.PreemMagazineMod02]
+  statModifiers: [Items.PHB_MagDamagePenalty]
+
+Items.PHB_ShortCircuitMag:
+  $base: Items.SimpleWeaponMod01
+  placementSlots: [AttachmentSlots.PreemMagazineMod01, AttachmentSlots.PreemMagazineMod02]
+  statModifiers: [Items.PHB_MagDamagePenalty]
+
+Items.PHB_ContagionMag:
+  $base: Items.SimpleWeaponMod01
+  placementSlots: [AttachmentSlots.PreemMagazineMod01, AttachmentSlots.PreemMagazineMod02]
+  statModifiers: [Items.PHB_MagDamagePenalty]
+
+Items.PHB_RebootOpticMag:
+  $base: Items.SimpleWeaponMod01
+  placementSlots: [AttachmentSlots.PreemMagazineMod01, AttachmentSlots.PreemMagazineMod02]
+  statModifiers: [Items.PHB_MagDamagePenalty]
+
+Items.PHB_SonicShockMag:
+  $base: Items.SimpleWeaponMod01
+  placementSlots: [AttachmentSlots.PreemMagazineMod01, AttachmentSlots.PreemMagazineMod02]
+  statModifiers: [Items.PHB_MagDamagePenalty]
+
+Items.PHB_CyberwareMalfunctionMag:
+  $base: Items.SimpleWeaponMod01
+  placementSlots: [AttachmentSlots.PreemMagazineMod01, AttachmentSlots.PreemMagazineMod02]
+  statModifiers: [Items.PHB_MagDamagePenalty]
+
+Items.PHB_WeaponGlitchMag:
+  $base: Items.SimpleWeaponMod01
+  placementSlots: [AttachmentSlots.PreemMagazineMod01, AttachmentSlots.PreemMagazineMod02]
+  statModifiers: [Items.PHB_MagDamagePenalty]
+
+Items.PHB_DetonateGrenadeMag:
+  $base: Items.SimpleWeaponMod01
+  placementSlots: [AttachmentSlots.PreemMagazineMod01, AttachmentSlots.PreemMagazineMod02]
+  statModifiers: [Items.PHB_MagDamagePenalty]
+
+Items.PHB_CyberpsychosisMag:
+  $base: Items.SimpleWeaponMod01
+  placementSlots: [AttachmentSlots.PreemMagazineMod01, AttachmentSlots.PreemMagazineMod02]
+  statModifiers: [Items.PHB_MagDamagePenalty]

@@ -1,0 +1,15 @@
+# The example mod's item and its stat change, read by TweakXL when the game starts.
+
+# 10% more damage: a Multiplier of 1.1 on the weapon's DPS stat.
+Items.MyAddon_DamageBoost:
+  $type: gamedataConstantStatModifier_Record
+  modifierType: Multiplier
+  statType: BaseStats.DPS
+  value: 1.1
+
+# The mod item. It fits Preem Weaponsmith's two barrel slots.
+# Once you release a mod, never rename its item ID: saved weapons refer to it.
+Items.MyAddon_PowerBarrel:
+  $base: Items.SimpleWeaponMod01
+  placementSlots: [AttachmentSlots.PreemBarrelMod01, AttachmentSlots.PreemBarrelMod02]
+  statModifiers: [Items.MyAddon_DamageBoost]

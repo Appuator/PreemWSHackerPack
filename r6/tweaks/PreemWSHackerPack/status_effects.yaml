@@ -1,0 +1,362 @@
+# The barrels' status effects (SPEC §4). Tuning lives here: max stacks, duration, and the flats
+# stackInterval and ramPerStack, which the hooks read by name.
+# Flats are spelled out as vanilla's stacking effects set them, rather than left to $type's defaults.
+# Only Breach has uiData (SPEC §7), and its name is the user's text. Its icon needs the Debuff tag,
+# and vanilla's finisher and poise bonuses come with that tag. The upload barrels' charges have neither.
+
+BaseStatusEffect.PHB_Breach:
+  $type: gamedataStatusEffect_Record
+  statusEffectType: BaseStatusEffectTypes.Misc
+  gameplayTags: [Debuff]
+  uiData:
+    $type: gamedataStatusEffectUIData_Record
+    displayName: "BreachStacks"
+    iconPath: "decreased_stats_icon"
+    # 0 hides the icon on the enemy. Vanilla's quickhack icons sit below 0 too (Cripple Movement: -9).
+    priority: -10.0
+  removeAllStacksWhenDurationEnds: true
+  isAffectedByTimeDilationNPC: true
+  isAffectedByTimeDilationPlayer: true
+  savable: true
+  stopActiveSfxOnDeactivate: true
+  maxStacks:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxStacks
+        value: 5.0
+  duration:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxDuration
+        value: 8.0
+
+# Plain flats beside the record: TweakXL refuses a property the record type doesn't have.
+BaseStatusEffect.PHB_Breach.stackInterval: 0.2
+BaseStatusEffect.PHB_Breach.ramPerStack: 1
+
+BaseStatusEffect.PHB_CrippleCharge:
+  $type: gamedataStatusEffect_Record
+  statusEffectType: BaseStatusEffectTypes.Misc
+  removeAllStacksWhenDurationEnds: true
+  isAffectedByTimeDilationNPC: true
+  isAffectedByTimeDilationPlayer: true
+  savable: true
+  stopActiveSfxOnDeactivate: true
+  maxStacks:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxStacks
+        value: 3.0
+  duration:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxDuration
+        value: 8.0
+
+# The hack this barrel uploads: name another here, with its boss and Chimera records, and the barrel
+# uploads that instead (SPEC §6).
+BaseStatusEffect.PHB_CrippleCharge.stackInterval: 0.2
+BaseStatusEffect.PHB_CrippleCharge.uploadCooldown: 30.0
+BaseStatusEffect.PHB_CrippleCharge.quickhack: "QuickHack.LocomotionMalfunctionHack"
+BaseStatusEffect.PHB_CrippleCharge.quickhackBoss: "QuickHack.BossLocomotionMalfunctionHack"
+BaseStatusEffect.PHB_CrippleCharge.quickhackChimera: "QuickHack.ChimeraLocomotionMalfunctionHack"
+
+BaseStatusEffect.PHB_OverheatCharge:
+  $type: gamedataStatusEffect_Record
+  statusEffectType: BaseStatusEffectTypes.Misc
+  removeAllStacksWhenDurationEnds: true
+  isAffectedByTimeDilationNPC: true
+  isAffectedByTimeDilationPlayer: true
+  savable: true
+  stopActiveSfxOnDeactivate: true
+  maxStacks:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxStacks
+        value: 3.0
+  duration:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxDuration
+        value: 8.0
+
+BaseStatusEffect.PHB_OverheatCharge.stackInterval: 0.2
+BaseStatusEffect.PHB_OverheatCharge.uploadCooldown: 15.0
+BaseStatusEffect.PHB_OverheatCharge.quickhack: "QuickHack.OverheatHack"
+BaseStatusEffect.PHB_OverheatCharge.quickhackBoss: "QuickHack.BossOverheatHack"
+BaseStatusEffect.PHB_OverheatCharge.quickhackChimera: "QuickHack.ChimeraOverheatHack"
+
+BaseStatusEffect.PHB_ShortCircuitCharge:
+  $type: gamedataStatusEffect_Record
+  statusEffectType: BaseStatusEffectTypes.Misc
+  removeAllStacksWhenDurationEnds: true
+  isAffectedByTimeDilationNPC: true
+  isAffectedByTimeDilationPlayer: true
+  savable: true
+  stopActiveSfxOnDeactivate: true
+  maxStacks:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxStacks
+        value: 3.0
+  duration:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxDuration
+        value: 8.0
+
+# Short Circuit's records are named Overload (SPEC §6a).
+BaseStatusEffect.PHB_ShortCircuitCharge.stackInterval: 0.2
+BaseStatusEffect.PHB_ShortCircuitCharge.uploadCooldown: 15.0
+BaseStatusEffect.PHB_ShortCircuitCharge.quickhack: "QuickHack.OverloadHack"
+BaseStatusEffect.PHB_ShortCircuitCharge.quickhackBoss: "QuickHack.BossOverloadHack"
+BaseStatusEffect.PHB_ShortCircuitCharge.quickhackChimera: "QuickHack.ChimeraOverloadHack"
+
+BaseStatusEffect.PHB_ContagionCharge:
+  $type: gamedataStatusEffect_Record
+  statusEffectType: BaseStatusEffectTypes.Misc
+  removeAllStacksWhenDurationEnds: true
+  isAffectedByTimeDilationNPC: true
+  isAffectedByTimeDilationPlayer: true
+  savable: true
+  stopActiveSfxOnDeactivate: true
+  maxStacks:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxStacks
+        value: 5.0
+  duration:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxDuration
+        value: 8.0
+
+# One record for every target (SPEC §6a).
+BaseStatusEffect.PHB_ContagionCharge.stackInterval: 0.2
+BaseStatusEffect.PHB_ContagionCharge.uploadCooldown: 15.0
+BaseStatusEffect.PHB_ContagionCharge.quickhack: "QuickHack.ContagionHack"
+BaseStatusEffect.PHB_ContagionCharge.quickhackBoss: "QuickHack.ContagionHack"
+BaseStatusEffect.PHB_ContagionCharge.quickhackChimera: "QuickHack.ContagionHack"
+
+BaseStatusEffect.PHB_RebootOpticCharge:
+  $type: gamedataStatusEffect_Record
+  statusEffectType: BaseStatusEffectTypes.Misc
+  removeAllStacksWhenDurationEnds: true
+  isAffectedByTimeDilationNPC: true
+  isAffectedByTimeDilationPlayer: true
+  savable: true
+  stopActiveSfxOnDeactivate: true
+  maxStacks:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxStacks
+        value: 3.0
+  duration:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxDuration
+        value: 8.0
+
+# Reboot Optic's records are named Blind (SPEC §6a).
+BaseStatusEffect.PHB_RebootOpticCharge.stackInterval: 0.2
+BaseStatusEffect.PHB_RebootOpticCharge.uploadCooldown: 30.0
+BaseStatusEffect.PHB_RebootOpticCharge.quickhack: "QuickHack.BlindHack"
+BaseStatusEffect.PHB_RebootOpticCharge.quickhackBoss: "QuickHack.BossBlindHack"
+BaseStatusEffect.PHB_RebootOpticCharge.quickhackChimera: "QuickHack.ChimeraBlindHack"
+
+BaseStatusEffect.PHB_SonicShockCharge:
+  $type: gamedataStatusEffect_Record
+  statusEffectType: BaseStatusEffectTypes.Misc
+  removeAllStacksWhenDurationEnds: true
+  isAffectedByTimeDilationNPC: true
+  isAffectedByTimeDilationPlayer: true
+  savable: true
+  stopActiveSfxOnDeactivate: true
+  maxStacks:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxStacks
+        value: 3.0
+  duration:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxDuration
+        value: 8.0
+
+# Sonic Shock's records are named CommsNoise, one level above its lowest (user, 2026-11-02). No Boss or
+# Chimera record: the normal one starts on a boss but not on Chimera, so the empty flat holds the full
+# charge (SPEC §6a).
+BaseStatusEffect.PHB_SonicShockCharge.stackInterval: 0.2
+BaseStatusEffect.PHB_SonicShockCharge.uploadCooldown: 15.0
+BaseStatusEffect.PHB_SonicShockCharge.quickhack: "QuickHack.CommsNoiseLvl2Hack"
+BaseStatusEffect.PHB_SonicShockCharge.quickhackBoss: "QuickHack.CommsNoiseLvl2Hack"
+BaseStatusEffect.PHB_SonicShockCharge.quickhackChimera: ""
+
+BaseStatusEffect.PHB_CyberwareMalfunctionCharge:
+  $type: gamedataStatusEffect_Record
+  statusEffectType: BaseStatusEffectTypes.Misc
+  removeAllStacksWhenDurationEnds: true
+  isAffectedByTimeDilationNPC: true
+  isAffectedByTimeDilationPlayer: true
+  savable: true
+  stopActiveSfxOnDeactivate: true
+  maxStacks:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxStacks
+        value: 3.0
+  duration:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxDuration
+        value: 8.0
+
+BaseStatusEffect.PHB_CyberwareMalfunctionCharge.stackInterval: 0.2
+BaseStatusEffect.PHB_CyberwareMalfunctionCharge.uploadCooldown: 8.0
+BaseStatusEffect.PHB_CyberwareMalfunctionCharge.quickhack: "QuickHack.CyberwareMalfunctionHack"
+BaseStatusEffect.PHB_CyberwareMalfunctionCharge.quickhackBoss: "QuickHack.BossCyberwareMalfunctionHack"
+BaseStatusEffect.PHB_CyberwareMalfunctionCharge.quickhackChimera: "QuickHack.ChimeraCyberwareMalfunctionHack"
+
+BaseStatusEffect.PHB_WeaponGlitchCharge:
+  $type: gamedataStatusEffect_Record
+  statusEffectType: BaseStatusEffectTypes.Misc
+  removeAllStacksWhenDurationEnds: true
+  isAffectedByTimeDilationNPC: true
+  isAffectedByTimeDilationPlayer: true
+  savable: true
+  stopActiveSfxOnDeactivate: true
+  maxStacks:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxStacks
+        value: 5.0
+  duration:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxDuration
+        value: 8.0
+
+# Weapon Glitch's records are named WeaponMalfunction (SPEC §6a).
+BaseStatusEffect.PHB_WeaponGlitchCharge.stackInterval: 0.2
+BaseStatusEffect.PHB_WeaponGlitchCharge.uploadCooldown: 30.0
+BaseStatusEffect.PHB_WeaponGlitchCharge.quickhack: "QuickHack.WeaponMalfunctionHack"
+BaseStatusEffect.PHB_WeaponGlitchCharge.quickhackBoss: "QuickHack.BossWeaponMalfunctionHack"
+BaseStatusEffect.PHB_WeaponGlitchCharge.quickhackChimera: "QuickHack.ChimeraWeaponMalfunctionHack"
+
+BaseStatusEffect.PHB_DetonateGrenadeCharge:
+  $type: gamedataStatusEffect_Record
+  statusEffectType: BaseStatusEffectTypes.Misc
+  removeAllStacksWhenDurationEnds: true
+  isAffectedByTimeDilationNPC: true
+  isAffectedByTimeDilationPlayer: true
+  savable: true
+  stopActiveSfxOnDeactivate: true
+  maxStacks:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxStacks
+        value: 12.0
+  duration:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxDuration
+        value: 8.0
+
+# Starts at level 3 (SPEC §6a).
+BaseStatusEffect.PHB_DetonateGrenadeCharge.stackInterval: 0.2
+BaseStatusEffect.PHB_DetonateGrenadeCharge.uploadCooldown: 60.0
+BaseStatusEffect.PHB_DetonateGrenadeCharge.quickhack: "QuickHack.GrenadeLvl3Hack"
+BaseStatusEffect.PHB_DetonateGrenadeCharge.quickhackBoss: "QuickHack.BossGrenadeLvl3Hack"
+BaseStatusEffect.PHB_DetonateGrenadeCharge.quickhackChimera: "QuickHack.ChimeraGrenadeLvl3Hack"
+
+BaseStatusEffect.PHB_CyberpsychosisCharge:
+  $type: gamedataStatusEffect_Record
+  statusEffectType: BaseStatusEffectTypes.Misc
+  removeAllStacksWhenDurationEnds: true
+  isAffectedByTimeDilationNPC: true
+  isAffectedByTimeDilationPlayer: true
+  savable: true
+  stopActiveSfxOnDeactivate: true
+  maxStacks:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxStacks
+        value: 12.0
+  duration:
+    $type: gamedataStatModifierGroup_Record
+    statModsLimit: -1
+    statModifiers:
+      - $type: gamedataConstantStatModifier_Record
+        modifierType: Additive
+        statType: BaseStats.MaxDuration
+        value: 8.0
+
+# Cyberpsychosis's records are named Madness, and start at level 3 (SPEC §6a).
+BaseStatusEffect.PHB_CyberpsychosisCharge.stackInterval: 0.2
+BaseStatusEffect.PHB_CyberpsychosisCharge.uploadCooldown: 60.0
+BaseStatusEffect.PHB_CyberpsychosisCharge.quickhack: "QuickHack.MadnessLvl3Hack"
+BaseStatusEffect.PHB_CyberpsychosisCharge.quickhackBoss: "QuickHack.BossMadnessLvl3Hack"
+BaseStatusEffect.PHB_CyberpsychosisCharge.quickhackChimera: "QuickHack.ChimeraMadnessLvl3Hack"
